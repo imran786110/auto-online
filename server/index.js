@@ -10,7 +10,7 @@ const userRoutes = require('./routes/users');
 const { initDatabase } = require('./database/db');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5010;
 
 // Middleware
 app.use(cors({

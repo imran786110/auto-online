@@ -99,7 +99,7 @@ Configure your `.env` file:
 ```env
 VITE_APP_URL=https://yourdomain.com
 VITE_API_URL=https://yourdomain.com/api
-PORT=5000
+PORT=5010
 JWT_SECRET=<paste-your-generated-secret>
 CLIENT_URL=https://yourdomain.com
 NODE_ENV=production
@@ -196,7 +196,7 @@ Configure your `.env` file:
 ```env
 VITE_APP_URL=https://yourdomain.com
 VITE_API_URL=https://yourdomain.com/api
-PORT=5000
+PORT=5010
 JWT_SECRET=<paste-your-generated-secret>
 CLIENT_URL=https://yourdomain.com
 NODE_ENV=production
@@ -231,7 +231,7 @@ pm2 logs auto-online --lines 5
 cat /var/www/auto-online/.env | grep PORT
 ```
 
-Then use that port number in the `proxy_pass` line below (default is 5000, but it might be different like 5010):
+Then use that port number in the `proxy_pass` line below (default is 5010, but it might be different like 5010):
 
 ```nginx
 server {
@@ -252,7 +252,7 @@ server {
     }
 
     # API proxy to Node.js backend
-    # IMPORTANT: Change 5000 to match your actual backend port!
+    # IMPORTANT: Change 5010 to match your actual backend port!
     location /api/ {
         proxy_pass http://localhost:5010/api/;
         proxy_http_version 1.1;
@@ -298,7 +298,7 @@ server {
 1. **Port Configuration:**
    - The `proxy_pass` port MUST match your backend's actual port
    - Check with: `pm2 logs auto-online | grep "running on port"`
-   - Common ports: 5000, 5010, or whatever is in your `.env` file
+   - Common ports: 5010, 5010, or whatever is in your `.env` file
 
 2. **Domain/IP Configuration:**
    - If you don't have a domain, replace `server_name yourdomain.com www.yourdomain.com;` with your server's IP:
@@ -361,8 +361,8 @@ pm2 list
 # 2. Check backend logs for errors
 pm2 logs auto-online --lines 50
 
-# 3. Check if backend is listening on port 5000
-sudo lsof -i :5000
+# 3. Check if backend is listening on port 5010
+sudo lsof -i :5010
 
 # 4. Check Nginx error logs
 sudo tail -n 50 /var/log/nginx/error.log
@@ -399,7 +399,7 @@ chmod -R 755 /var/www/auto-online/server/uploads
 
 **502 Bad Gateway Error:**
 - Backend isn't running - check with `pm2 list`
-- Wrong port in proxy_pass - verify backend is on port 5000
+- Wrong port in proxy_pass - verify backend is on port 5010
 - Check backend logs: `pm2 logs auto-online`
 
 **Port 80 already in use:**
@@ -541,7 +541,7 @@ Change HTTP to HTTPS:
 ```env
 VITE_APP_URL=https://yourdomain.com
 VITE_API_URL=https://yourdomain.com/api
-PORT=5000
+PORT=5010
 JWT_SECRET=<your-secret>
 CLIENT_URL=https://yourdomain.com
 NODE_ENV=production
@@ -840,8 +840,8 @@ free -h
 # Check logs
 pm2 logs auto-online
 
-# Check if port 5000 is in use
-sudo lsof -i :5000
+# Check if port 5010 is in use
+sudo lsof -i :5010
 
 # Restart
 pm2 restart auto-online

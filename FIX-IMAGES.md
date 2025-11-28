@@ -1,7 +1,7 @@
 # Fix Image Loading Issue - Server Deployment
 
 ## Problem
-Car images are not loading because the frontend was built with `localhost:5000` URLs hardcoded.
+Car images are not loading because the frontend was built with `localhost:5010` URLs hardcoded.
 
 ## Solution
 The code has been fixed to use environment variables. You need to:

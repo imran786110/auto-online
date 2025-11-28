@@ -86,7 +86,7 @@ The component expects images to be passed as:
 1. A JSON string: `'["/path/to/image1.jpg", "/path/to/image2.jpg"]'`
 2. An array: `["/path/to/image1.jpg", "/path/to/image2.jpg"]`
 
-Images are displayed with the base URL: `http://localhost:5000{imagePath}`
+Images are displayed with the base URL: `http://localhost:5010{imagePath}`
 
 If no valid images are found, a placeholder is displayed and an error is logged to console.
 

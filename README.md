@@ -80,7 +80,7 @@ npm run dev
 
 4. **Access the application:**
 - Frontend: http://localhost:3000
-- Backend API: http://localhost:5000/api
+- Backend API: http://localhost:5010/api
 
 ### Default Admin Account
 ```
@@ -211,10 +211,10 @@ Located in `.env` file:
 # Application
 VITE_APP_NAME=Auto Martines
 VITE_APP_URL=http://localhost:3000
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5010/api
 
 # Server
-PORT=5000
+PORT=5010
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 CLIENT_URL=http://localhost:3000
 NODE_ENV=development
@@ -270,8 +270,8 @@ Server-side protection prevents accidental image loss:
 
 ### Port Already in Use
 ```bash
-# Find process using port 5000
-netstat -ano | findstr :5000
+# Find process using port 5010
+netstat -ano | findstr :5010
 
 # Kill the process (Windows)
 taskkill /PID <process_id> /F
