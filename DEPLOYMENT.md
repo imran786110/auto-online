@@ -54,7 +54,7 @@ npm run build
 2. **Prepare deployment files:**
 ```bash
 # Create a deployment archive excluding node_modules
-tar -czf auto-martines.tar.gz \
+tar -czf auto-online.tar.gz \
   --exclude=node_modules \
   --exclude=.git \
   --exclude=server/data \
@@ -83,7 +83,7 @@ cp .env .env.production
 
 ```bash
 # Upload to server (replace with your server details)
-scp auto-martines.tar.gz user@your-server-ip:/home/user/
+scp auto-online.tar.gz user@your-server-ip:/home/user/
 ```
 
 ## Step 3: Deploy on Server
@@ -95,14 +95,14 @@ scp auto-martines.tar.gz user@your-server-ip:/home/user/
 ssh user@your-server-ip
 
 # Create application directory
-sudo mkdir -p /var/www/auto-martines
-cd /var/www/auto-martines
+sudo mkdir -p /var/www/auto-online
+cd /var/www/auto-online
 
 # Extract files
-sudo tar -xzf ~/auto-martines.tar.gz -C /var/www/auto-martines/
+sudo tar -xzf ~/auto-online.tar.gz -C /var/www/auto-online/
 
 # Set ownership
-sudo chown -R $USER:$USER /var/www/auto-martines
+sudo chown -R $USER:$USER /var/www/auto-online
 
 # Install dependencies (production only)
 npm install --production
@@ -143,7 +143,7 @@ NODE_ENV=production
 ### Create Nginx Configuration
 
 ```bash
-sudo nano /etc/nginx/sites-available/auto-martines
+sudo nano /etc/nginx/sites-available/auto-online
 ```
 
 Add the following configuration:
@@ -154,12 +154,12 @@ server {
     server_name yourdomain.com www.yourdomain.com;
 
     # Serve static files (frontend)
-    root /var/www/auto-martines/dist;
+    root /var/www/auto-online/dist;
     index index.html;
 
     # Uploaded images
     location /uploads/ {
-        alias /var/www/auto-martines/server/uploads/;
+        alias /var/www/auto-online/server/uploads/;
         expires 30d;
         add_header Cache-Control "public, immutable";
     }
@@ -209,7 +209,7 @@ server {
 
 ```bash
 # Create symbolic link
-sudo ln -s /etc/nginx/sites-available/auto-martines /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/auto-online /etc/nginx/sites-enabled/
 
 # Test Nginx configuration
 sudo nginx -t
@@ -221,10 +221,10 @@ sudo systemctl reload nginx
 ## Step 5: Start Backend with PM2
 
 ```bash
-cd /var/www/auto-martines
+cd /var/www/auto-online
 
 # Start the backend server
-pm2 start server/index.js --name auto-martines
+pm2 start server/index.js --name auto-online
 
 # Save PM2 configuration
 pm2 save
@@ -238,13 +238,13 @@ pm2 startup
 
 ```bash
 # View logs
-pm2 logs auto-martines
+pm2 logs auto-online
 
 # Restart application
-pm2 restart auto-martines
+pm2 restart auto-online
 
 # Stop application
-pm2 stop auto-martines
+pm2 stop auto-online
 
 # Monitor
 pm2 monit
@@ -300,7 +300,7 @@ sudo ufw status
 3. **Check logs:**
 ```bash
 # Backend logs
-pm2 logs auto-martines
+pm2 logs auto-online
 
 # Nginx access logs
 sudo tail -f /var/log/nginx/access.log
@@ -319,31 +319,31 @@ sudo tail -f /var/log/nginx/error.log
 npm run build
 
 # Create update archive
-tar -czf auto-martines-update.tar.gz dist/ server/
+tar -czf auto-online-update.tar.gz dist/ server/
 ```
 
 ### 2. On Server
 
 ```bash
 # Stop the application
-pm2 stop auto-martines
+pm2 stop auto-online
 
 # Backup database
-cp /var/www/auto-martines/server/data/automartines.db \
-   /var/www/auto-martines/server/data/automartines.db.backup
+cp /var/www/auto-online/server/data/automartines.db \
+   /var/www/auto-online/server/data/automartines.db.backup
 
 # Extract update
-cd /var/www/auto-martines
-tar -xzf ~/auto-martines-update.tar.gz
+cd /var/www/auto-online
+tar -xzf ~/auto-online-update.tar.gz
 
 # Install any new dependencies
 npm install --production
 
 # Restart application
-pm2 restart auto-martines
+pm2 restart auto-online
 
 # Check logs
-pm2 logs auto-martines
+pm2 logs auto-online
 ```
 
 ## Backup Strategy
@@ -353,23 +353,23 @@ pm2 logs auto-martines
 Create a backup script:
 
 ```bash
-sudo nano /usr/local/bin/backup-auto-martines.sh
+sudo nano /usr/local/bin/backup-auto-online.sh
 ```
 
 ```bash
 #!/bin/bash
-BACKUP_DIR="/var/backups/auto-martines"
+BACKUP_DIR="/var/backups/auto-online"
 DATE=$(date +%Y%m%d_%H%M%S)
 
 mkdir -p $BACKUP_DIR
 
 # Backup database
-cp /var/www/auto-martines/server/data/automartines.db \
+cp /var/www/auto-online/server/data/automartines.db \
    $BACKUP_DIR/automartines_$DATE.db
 
 # Backup uploads
 tar -czf $BACKUP_DIR/uploads_$DATE.tar.gz \
-   /var/www/auto-martines/server/uploads/
+   /var/www/auto-online/server/uploads/
 
 # Keep only last 7 days of backups
 find $BACKUP_DIR -name "*.db" -mtime +7 -delete
@@ -381,13 +381,13 @@ echo "Backup completed: $DATE"
 Make executable and add to cron:
 
 ```bash
-sudo chmod +x /usr/local/bin/backup-auto-martines.sh
+sudo chmod +x /usr/local/bin/backup-auto-online.sh
 
 # Edit crontab
 sudo crontab -e
 
 # Add daily backup at 2 AM
-0 2 * * * /usr/local/bin/backup-auto-martines.sh >> /var/log/auto-martines-backup.log 2>&1
+0 2 * * * /usr/local/bin/backup-auto-online.sh >> /var/log/auto-online-backup.log 2>&1
 ```
 
 ## Monitoring
@@ -395,7 +395,7 @@ sudo crontab -e
 ### Log Rotation
 
 ```bash
-sudo nano /etc/logrotate.d/auto-martines
+sudo nano /etc/logrotate.d/auto-online
 ```
 
 ```
@@ -431,13 +431,13 @@ free -h
 ### Backend not starting
 ```bash
 # Check logs
-pm2 logs auto-martines
+pm2 logs auto-online
 
 # Check if port 5000 is in use
 sudo lsof -i :5000
 
 # Restart
-pm2 restart auto-martines
+pm2 restart auto-online
 ```
 
 ### Nginx errors
@@ -455,23 +455,23 @@ sudo systemctl restart nginx
 ### Database locked
 ```bash
 # Stop application
-pm2 stop auto-martines
+pm2 stop auto-online
 
 # Check for zombie processes
 ps aux | grep node
 
 # Restart
-pm2 restart auto-martines
+pm2 restart auto-online
 ```
 
 ### Images not uploading
 ```bash
 # Check permissions
-ls -la /var/www/auto-martines/server/uploads/
+ls -la /var/www/auto-online/server/uploads/
 
 # Fix permissions if needed
-sudo chown -R $USER:$USER /var/www/auto-martines/server/uploads/
-chmod -R 755 /var/www/auto-martines/server/uploads/
+sudo chown -R $USER:$USER /var/www/auto-online/server/uploads/
+chmod -R 755 /var/www/auto-online/server/uploads/
 ```
 
 ## Security Checklist
@@ -491,7 +491,7 @@ chmod -R 755 /var/www/auto-martines/server/uploads/
 
 ### Enable HTTP/2 in Nginx
 
-Edit `/etc/nginx/sites-available/auto-martines`:
+Edit `/etc/nginx/sites-available/auto-online`:
 
 ```nginx
 listen 443 ssl http2;

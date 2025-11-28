@@ -102,7 +102,7 @@ Password: admin12345
 ## Project Structure
 
 ```
-auto-martines-web/
+auto-online-web/
 ├── server/                    # Backend
 │   ├── index.js              # Express server entry point
 │   ├── database/
