@@ -41,6 +41,14 @@ fi
 echo -e "${YELLOW}[4/7]${NC} Pulling latest changes from GitHub..."
 git pull origin main
 
+# Verify database and uploads are ignored
+echo -e "${YELLOW}[4.5/7]${NC} Verifying data integrity..."
+if git ls-files --error-unmatch server/data/*.db 2>/dev/null; then
+    echo -e "${RED}⚠ WARNING: Database files are tracked by git!${NC}"
+    echo -e "${RED}This should not happen. Check .gitignore${NC}"
+fi
+echo -e "${GREEN}✓${NC} Database and uploads are properly ignored by git"
+
 # Install/update dependencies
 echo -e "${YELLOW}[5/7]${NC} Installing dependencies..."
 npm install

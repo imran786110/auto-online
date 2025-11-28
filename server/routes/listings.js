@@ -127,10 +127,18 @@ router.post('/', authenticate, upload.array('images', 10), [
   body('price').isFloat({ min: 0 }),
   body('description').optional().trim(),
 ], (req, res) => {
+  console.log('📝 POST /listings - Creating new listing...');
+  console.log('👤 User ID:', req.user?.userId);
+  console.log('📸 Files uploaded:', req.files?.length || 0);
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.error('❌ Validation errors:', JSON.stringify(errors.array(), null, 2));
+    console.error('📦 Request body:', JSON.stringify(req.body, null, 2));
     return res.status(400).json({ errors: errors.array() });
   }
+
+  console.log('✅ Validation passed, proceeding with database insert...');
 
   const {
     // Basic Info
@@ -171,16 +179,17 @@ router.post('/', authenticate, upload.array('images', 10), [
       co2Emissions, emissionClass, emissionSticker,
       color, colorManufacturer, interiorColor, interiorType, doors, seats,
       previousOwners, fullServiceHistory ? 1 : 0, nonSmokingVehicle ? 1 : 0,
-      safetyFeatures, safetyFeatures, comfortFeatures, entertainmentFeatures, extrasFeatures,
+      JSON.stringify({ safety: [], comfort: [], entertainment: [], extras: [] }), safetyFeatures, comfortFeatures, entertainmentFeatures, extrasFeatures,
       availability, vehicleType, bodyType, climatisation, parkingAssistance,
       JSON.stringify(images)
     ],
     function(err) {
       if (err) {
-        console.error('Database insert error:', err);
+        console.error('❌ Database insert error:', err);
         return res.status(500).json({ error: 'Failed to create listing' });
       }
 
+      console.log('✅ Listing created successfully! ID:', this.lastID);
       res.status(201).json({
         message: 'Listing created successfully',
         listingId: this.lastID

@@ -1,0 +1,2 @@
+# This file ensures the uploads directory is created when cloning the repo
+# Upload files are ignored by .gitignore

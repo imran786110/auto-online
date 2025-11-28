@@ -17,6 +17,12 @@ dist-ssr
 .env.local
 .env.production
 
+# Database files (keep local and production databases separate)
+server/data/*.db
+server/data/*.db-*
+server/uploads/*
+!server/uploads/.gitkeep
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
