@@ -489,7 +489,7 @@ certbot --version
 Replace `yourdomain.com` with your actual domain:
 
 ```bash
-sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+sudo certbot --nginx -d yourdomain.com
 ```
 
 **Step 2: Follow the interactive prompts:**
