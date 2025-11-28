@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from '@chakra-ui/react'
-import { ChevronLeft, ChevronRight, Check, Car, Zap, Palette, Shield, Image as ImageIcon } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Check, Car, Zap, Palette, Shield, Image as ImageIcon, X } from 'lucide-react'
 import { listingsAPI } from '../api/listings'
 
 export default function CreateListing() {
@@ -116,11 +116,20 @@ export default function CreateListing() {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files)
-    setImages(files)
+    setImages(prevImages => [...prevImages, ...files])
 
     // Create previews
     const previews = files.map(file => URL.createObjectURL(file))
-    setImagePreviews(previews)
+    setImagePreviews(prevPreviews => [...prevPreviews, ...previews])
+  }
+
+  const removeImage = (indexToRemove) => {
+    // Revoke the object URL to free memory
+    URL.revokeObjectURL(imagePreviews[indexToRemove])
+
+    // Remove from both arrays
+    setImages(prevImages => prevImages.filter((_, index) => index !== indexToRemove))
+    setImagePreviews(prevPreviews => prevPreviews.filter((_, index) => index !== indexToRemove))
   }
 
   const handleSubmit = async (e) => {
@@ -1036,20 +1045,20 @@ export default function CreateListing() {
         <label className="block text-sm font-medium text-gray-700 mb-2">Fahrzeugbilder (max. 10)</label>
         <input
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/avif"
           multiple
           onChange={handleImageChange}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
         />
         <p className="text-sm text-gray-500 mt-2">
-          Laden Sie bis zu 10 Bilder hoch. Das erste Bild wird als Hauptbild verwendet.
+          Laden Sie bis zu 10 Bilder hoch (JPG, PNG, WebP, GIF, AVIF). Das erste Bild wird als Hauptbild verwendet.
         </p>
       </div>
 
       {imagePreviews.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {imagePreviews.map((preview, index) => (
-            <div key={index} className="relative aspect-square rounded-lg overflow-hidden border-2 border-gray-200">
+            <div key={index} className="relative aspect-square rounded-lg overflow-hidden border-2 border-gray-200 group">
               <img
                 src={preview}
                 alt={`Preview ${index + 1}`}
@@ -1060,6 +1069,14 @@ export default function CreateListing() {
                   Hauptbild
                 </div>
               )}
+              <button
+                type="button"
+                onClick={() => removeImage(index)}
+                className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1.5 shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                title="Bild entfernen"
+              >
+                <X size={16} />
+              </button>
             </div>
           ))}
         </div>

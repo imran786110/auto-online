@@ -225,16 +225,25 @@ export default function EditListing() {
 
   const handleNewImageChange = (e) => {
     const files = Array.from(e.target.files)
-    setNewImages(files)
+    setNewImages(prevImages => [...prevImages, ...files])
 
     // Create previews
     const previews = files.map(file => URL.createObjectURL(file))
-    setNewImagePreviews(previews)
+    setNewImagePreviews(prevPreviews => [...prevPreviews, ...previews])
   }
 
   const handleRemoveExistingImage = (imageUrl) => {
     setImagesToDelete([...imagesToDelete, imageUrl])
     setExistingImages(existingImages.filter(img => img !== imageUrl))
+  }
+
+  const handleRemoveNewImage = (indexToRemove) => {
+    // Revoke the object URL to free memory
+    URL.revokeObjectURL(newImagePreviews[indexToRemove])
+
+    // Remove from both arrays
+    setNewImages(prevImages => prevImages.filter((_, index) => index !== indexToRemove))
+    setNewImagePreviews(prevPreviews => prevPreviews.filter((_, index) => index !== indexToRemove))
   }
 
   const handleSubmit = async (e) => {
@@ -1179,13 +1188,13 @@ export default function EditListing() {
         <label className="block text-sm font-medium text-gray-700 mb-2">Neue Bilder hinzufügen (max. 10)</label>
         <input
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/avif"
           multiple
           onChange={handleNewImageChange}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
         />
         <p className="text-sm text-gray-500 mt-2">
-          Laden Sie bis zu 10 neue Bilder hoch.
+          Laden Sie bis zu 10 neue Bilder hoch (JPG, PNG, WebP, GIF, AVIF).
         </p>
       </div>
 
@@ -1194,12 +1203,20 @@ export default function EditListing() {
           <label className="block text-sm font-medium text-gray-700 mb-2">Neue Bilder (Vorschau)</label>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {newImagePreviews.map((preview, index) => (
-              <div key={index} className="relative aspect-square rounded-lg overflow-hidden border-2 border-primary-200">
+              <div key={index} className="relative aspect-square rounded-lg overflow-hidden border-2 border-primary-200 group">
                 <img
                   src={preview}
                   alt={`New Preview ${index + 1}`}
                   className="w-full h-full object-cover"
                 />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveNewImage(index)}
+                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1.5 shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                  title="Bild entfernen"
+                >
+                  <X size={16} />
+                </button>
               </div>
             ))}
           </div>
