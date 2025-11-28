@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Car, Eye } from 'lucide-react';
+import { getBaseURL } from '../../api/client';
 
 const ListingItem = ({ listing }) => {
   if (!listing) return null;
@@ -19,7 +20,7 @@ const ListingItem = ({ listing }) => {
 
   // Get the first image or use placeholder
   const carImage = images.length > 0
-    ? `http://localhost:5000${images[0]}`
+    ? `${getBaseURL()}${images[0]}`
     : 'https://via.placeholder.com/400x300?text=No+Image';
 
   // Format price in EUR

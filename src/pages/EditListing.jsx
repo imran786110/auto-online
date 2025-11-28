@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useToast } from '@chakra-ui/react'
 import { ChevronLeft, ChevronRight, Check, Car, Zap, Palette, Shield, Image as ImageIcon, X } from 'lucide-react'
 import { listingsAPI } from '../api/listings'
+import { getBaseURL } from '../api/client'
 
 export default function EditListing() {
   const { listingId } = useParams()
@@ -1043,7 +1044,7 @@ export default function EditListing() {
             {existingImages.map((imageUrl, index) => (
               <div key={index} className="relative aspect-square rounded-lg overflow-hidden border-2 border-gray-200">
                 <img
-                  src={`http://localhost:5000${imageUrl}`}
+                  src={`${getBaseURL()}${imageUrl}`}
                   alt={`Existing ${index + 1}`}
                   className="w-full h-full object-cover"
                 />

@@ -12,6 +12,7 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { listingsAPI } from '../api/listings';
+import { getBaseURL } from '../api/client';
 
 // Helper component for detail items
 const DetailItem = ({ label, value }) => (
@@ -255,7 +256,7 @@ export default function ListingDetails() {
   }
 
   const currentImage = images.length > 0
-    ? `http://localhost:5000${images[currentImageIndex]}`
+    ? `${getBaseURL()}${images[currentImageIndex]}`
     : 'https://via.placeholder.com/800x600?text=Kein+Bild';
 
   return (
@@ -343,7 +344,7 @@ export default function ListingDetails() {
                     }`}
                   >
                     <img
-                      src={`http://localhost:5000${img}`}
+                      src={`${getBaseURL()}${img}`}
                       alt={`Thumbnail ${index + 1}`}
                       className="w-full h-full object-cover"
                     />

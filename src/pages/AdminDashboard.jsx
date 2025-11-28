@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
 import { Edit, Trash2, CheckCircle, MoreVertical, X, Eye, AlertTriangle } from 'lucide-react';
 import { listingsAPI } from '../api/listings';
+import { getBaseURL } from '../api/client';
 
 export default function AdminDashboard() {
   const [listings, setListings] = useState([]);
@@ -369,7 +370,7 @@ export default function AdminDashboard() {
                     const images = deleteDialog.listing.images ? JSON.parse(deleteDialog.listing.images) : [];
                     return images[0] ? (
                       <img
-                        src={`http://localhost:5000${images[0]}`}
+                        src={`${getBaseURL()}${images[0]}`}
                         alt={deleteDialog.listing.title}
                         className="w-20 h-20 object-cover rounded-lg"
                       />
