@@ -1,4 +1,4 @@
-# Auto Martines - Car Showroom Website
+# Auto Online - Car Showroom Website
 
 A modern, full-stack car showroom web application built for the German market.
 
