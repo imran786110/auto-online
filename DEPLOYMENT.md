@@ -2,6 +2,15 @@
 
 This guide covers deploying Auto Martines to a Linux server with Nginx.
 
+## Local Deployment
+```
+npm install
+npm run server
+
+# and in another terminal
+npm run dev
+```
+
 ## Deployment Methods
 
 This guide covers two deployment approaches:
