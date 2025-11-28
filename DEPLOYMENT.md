@@ -111,7 +111,7 @@ NODE_ENV=production
 pm2 stop auto-online
 
 # Backup database
-cp server/data/automartines.db server/data/automartines.db.backup
+cp server/data/auto-online.db server/data/auto-online.db.backup
 
 # Pull latest changes
 git pull origin main
@@ -708,7 +708,7 @@ See the "For future updates" section in Method A above, or use these commands:
 
 ```bash
 pm2 stop auto-online
-cp server/data/automartines.db server/data/automartines.db.backup
+cp server/data/auto-online.db server/data/auto-online.db.backup
 git pull origin main
 npm install
 NODE_ENV=production npm run build
@@ -736,8 +736,8 @@ tar -czf auto-online-update.tar.gz dist/ server/
 pm2 stop auto-online
 
 # Backup database
-cp /var/www/auto-online/server/data/automartines.db \
-   /var/www/auto-online/server/data/automartines.db.backup
+cp /var/www/auto-online/server/data/auto-online.db \
+   /var/www/auto-online/server/data/auto-online.db.backup
 
 # Extract update
 cd /var/www/auto-online
@@ -771,8 +771,8 @@ DATE=$(date +%Y%m%d_%H%M%S)
 mkdir -p $BACKUP_DIR
 
 # Backup database
-cp /var/www/auto-online/server/data/automartines.db \
-   $BACKUP_DIR/automartines_$DATE.db
+cp /var/www/auto-online/server/data/auto-online.db \
+   $BACKUP_DIR/auto-online_$DATE.db
 
 # Backup uploads
 tar -czf $BACKUP_DIR/uploads_$DATE.tar.gz \

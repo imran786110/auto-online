@@ -284,10 +284,10 @@ PORT=5001
 Delete and recreate the database:
 ```bash
 # Windows
-del server\data\automartines.db
+del server\data\auto-online.db
 
 # Linux/Mac
-rm server/data/automartines.db
+rm server/data/auto-online.db
 
 # Then restart server
 npm run server

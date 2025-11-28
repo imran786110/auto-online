@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
 
-const dbPath = path.join(__dirname, '..', 'data', 'automartines.db');
+const dbPath = path.join(__dirname, '..', 'data', 'auto-online.db');
 const dbDir = path.dirname(dbPath);
 
 // Ensure data directory exists

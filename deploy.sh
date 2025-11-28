@@ -29,9 +29,9 @@ pm2 stop $APP_NAME || echo "App was not running"
 
 # Backup database
 echo -e "${YELLOW}[3/7]${NC} Backing up database..."
-if [ -f "server/data/automartines.db" ]; then
-    BACKUP_FILE="server/data/automartines.db.backup-$(date +%Y%m%d_%H%M%S)"
-    cp server/data/automartines.db "$BACKUP_FILE"
+if [ -f "server/data/auto-online.db" ]; then
+    BACKUP_FILE="server/data/auto-online.db.backup-$(date +%Y%m%d_%H%M%S)"
+    cp server/data/auto-online.db "$BACKUP_FILE"
     echo -e "${GREEN}✓${NC} Database backed up to: $BACKUP_FILE"
 else
     echo -e "${YELLOW}⚠${NC} No database found to backup"
