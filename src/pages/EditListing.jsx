@@ -209,6 +209,20 @@ export default function EditListing() {
     }))
   }
 
+  const handleSelectAll = (category, allFeatures) => {
+    setFeatures(prev => ({
+      ...prev,
+      [category]: [...allFeatures]
+    }))
+  }
+
+  const handleDeselectAll = (category) => {
+    setFeatures(prev => ({
+      ...prev,
+      [category]: []
+    }))
+  }
+
   const handleNewImageChange = (e) => {
     const files = Array.from(e.target.files)
     setNewImages(files)
@@ -943,7 +957,26 @@ export default function EditListing() {
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-3">Sicherheit</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-gray-900">Sicherheit</h3>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleSelectAll('safety', safetyFeaturesList)}
+                className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+              >
+                Alle auswählen
+              </button>
+              <span className="text-gray-300">|</span>
+              <button
+                type="button"
+                onClick={() => handleDeselectAll('safety')}
+                className="text-xs text-gray-600 hover:text-gray-700 font-medium"
+              >
+                Alle abwählen
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {safetyFeaturesList.map(feature => (
               <label key={feature} className="flex items-center gap-2 cursor-pointer">
@@ -960,7 +993,26 @@ export default function EditListing() {
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-3">Komfort</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-gray-900">Komfort</h3>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleSelectAll('comfort', comfortFeaturesList)}
+                className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+              >
+                Alle auswählen
+              </button>
+              <span className="text-gray-300">|</span>
+              <button
+                type="button"
+                onClick={() => handleDeselectAll('comfort')}
+                className="text-xs text-gray-600 hover:text-gray-700 font-medium"
+              >
+                Alle abwählen
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {comfortFeaturesList.map(feature => (
               <label key={feature} className="flex items-center gap-2 cursor-pointer">
@@ -977,7 +1029,26 @@ export default function EditListing() {
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-3">Unterhaltung</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-gray-900">Unterhaltung</h3>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleSelectAll('entertainment', entertainmentFeaturesList)}
+                className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+              >
+                Alle auswählen
+              </button>
+              <span className="text-gray-300">|</span>
+              <button
+                type="button"
+                onClick={() => handleDeselectAll('entertainment')}
+                className="text-xs text-gray-600 hover:text-gray-700 font-medium"
+              >
+                Alle abwählen
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {entertainmentFeaturesList.map(feature => (
               <label key={feature} className="flex items-center gap-2 cursor-pointer">
@@ -994,7 +1065,26 @@ export default function EditListing() {
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-3">Extras</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-gray-900">Extras</h3>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleSelectAll('extras', extrasFeaturesList)}
+                className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+              >
+                Alle auswählen
+              </button>
+              <span className="text-gray-300">|</span>
+              <button
+                type="button"
+                onClick={() => handleDeselectAll('extras')}
+                className="text-xs text-gray-600 hover:text-gray-700 font-medium"
+              >
+                Alle abwählen
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {extrasFeaturesList.map(feature => (
               <label key={feature} className="flex items-center gap-2 cursor-pointer">
@@ -1011,7 +1101,26 @@ export default function EditListing() {
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-3">Einparkhilfe</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-gray-900">Einparkhilfe</h3>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleSelectAll('parking', ['Sensoren vorne', 'Sensoren hinten', 'Sensoren vorne und hinten', 'Rückfahrkamera', '360° Kamera', 'Selbstlenkende Einparkhilfe'])}
+                className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+              >
+                Alle auswählen
+              </button>
+              <span className="text-gray-300">|</span>
+              <button
+                type="button"
+                onClick={() => handleDeselectAll('parking')}
+                className="text-xs text-gray-600 hover:text-gray-700 font-medium"
+              >
+                Alle abwählen
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {['Sensoren vorne', 'Sensoren hinten', 'Sensoren vorne und hinten', 'Rückfahrkamera', '360° Kamera', 'Selbstlenkende Einparkhilfe'].map(feature => (
               <label key={feature} className="flex items-center gap-2 cursor-pointer">
