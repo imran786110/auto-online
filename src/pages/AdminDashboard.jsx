@@ -188,8 +188,8 @@ export default function AdminDashboard() {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-xl shadow-lg mb-8">
-          <div className="overflow-visible">
+        <div className="bg-white rounded-xl shadow-lg mb-8 overflow-hidden">
+          <div className="overflow-x-auto">
             <table className="w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
