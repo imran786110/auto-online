@@ -195,6 +195,16 @@ const Navbar = () => {
                   <Plus className="inline h-4 w-4 mr-2" />
                   Anzeige erstellen
                 </Link>
+                {user.role === 'admin' && (
+                  <Link
+                    to="/admin/dashboard"
+                    onClick={closeMenu}
+                    className="block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg font-medium transition-colors"
+                  >
+                    <User className="inline h-4 w-4 mr-2" />
+                    Admin Dashboard
+                  </Link>
+                )}
                 <Link
                   to="/profile"
                   onClick={closeMenu}
