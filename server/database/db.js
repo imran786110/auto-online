@@ -75,6 +75,72 @@ const createAdminAccount = () => {
   });
 };
 
+// Create performance indexes
+const createIndexes = () => {
+  return new Promise((resolve, reject) => {
+    const indexes = [
+      { name: 'idx_listings_make', table: 'listings', column: 'make' },
+      { name: 'idx_listings_price', table: 'listings', column: 'price' },
+      { name: 'idx_listings_year', table: 'listings', column: 'year' },
+      { name: 'idx_listings_sold', table: 'listings', column: 'sold' },
+      { name: 'idx_listings_created', table: 'listings', column: 'createdAt' },
+      { name: 'idx_users_email', table: 'users', column: 'email' },
+      { name: 'idx_users_role', table: 'users', column: 'role' }
+    ];
+
+    let indexesCreated = 0;
+    let indexesSkipped = 0;
+
+    // Check which indexes already exist
+    db.all("SELECT name FROM sqlite_master WHERE type='index'", (err, existingIndexes) => {
+      if (err) {
+        console.error('Error checking existing indexes:', err);
+        reject(err);
+        return;
+      }
+
+      const existingIndexNames = existingIndexes.map(idx => idx.name);
+
+      indexes.forEach((index, i) => {
+        if (existingIndexNames.includes(index.name)) {
+          indexesSkipped++;
+          if (i === indexes.length - 1) {
+            if (indexesCreated > 0) {
+              console.log(`✅ Created ${indexesCreated} database indexes`);
+            }
+            if (indexesSkipped > 0) {
+              console.log(`⏭️  Skipped ${indexesSkipped} existing indexes`);
+            }
+            resolve();
+          }
+        } else {
+          db.run(
+            `CREATE INDEX IF NOT EXISTS ${index.name} ON ${index.table}(${index.column})`,
+            (err) => {
+              if (err) {
+                console.error(`Error creating index ${index.name}:`, err);
+              } else {
+                indexesCreated++;
+                console.log(`⚙️  Created index: ${index.name}`);
+              }
+
+              if (i === indexes.length - 1) {
+                if (indexesCreated > 0) {
+                  console.log(`✅ Created ${indexesCreated} database indexes`);
+                }
+                if (indexesSkipped > 0) {
+                  console.log(`⏭️  Skipped ${indexesSkipped} existing indexes`);
+                }
+                resolve();
+              }
+            }
+          );
+        }
+      });
+    });
+  });
+};
+
 const initDatabase = () => {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
@@ -304,6 +370,14 @@ const initDatabase = () => {
           reject(err);
         } else {
           console.log('✅ Database tables initialized');
+
+          // Create performance indexes
+          try {
+            await createIndexes();
+          } catch (error) {
+            console.error('Error creating indexes:', error);
+          }
+
           // Wait for admin account creation before resolving
           try {
             await createAdminAccount();
