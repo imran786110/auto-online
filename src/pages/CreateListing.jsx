@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from '@chakra-ui/react'
-import { ChevronLeft, ChevronRight, Check, Car, Zap, Palette, Shield, Image as ImageIcon, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Check, Car, Zap, Palette, Shield, Image as ImageIcon, X, Search } from 'lucide-react'
 import { listingsAPI } from '../api/listings'
+import { lookupVehicleByKBA, mapKBADataToForm } from '../api/kba'
 
 export default function CreateListing() {
   const [currentStep, setCurrentStep] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [kbaLookupLoading, setKbaLookupLoading] = useState(false)
+  const [hsn, setHsn] = useState('')
+  const [tsn, setTsn] = useState('')
   const [formData, setFormData] = useState({
     // Basic Info
     title: '',
@@ -89,6 +93,79 @@ export default function CreateListing() {
       ...formData,
       [e.target.name]: value
     })
+  }
+
+  const handleKBALookup = async (hsnValue, tsnValue) => {
+    // Only trigger lookup if both HSN and TSN are filled
+    if (!hsnValue || !tsnValue) return
+
+    // Validate HSN (should be 4 characters)
+    if (hsnValue.length !== 4) return
+
+    // Validate TSN (should be 3 characters)
+    if (tsnValue.length !== 3) return
+
+    setKbaLookupLoading(true)
+
+    try {
+      const result = await lookupVehicleByKBA(hsnValue, tsnValue)
+
+      if (result.success && result.data) {
+        const mappedData = mapKBADataToForm(result.data)
+
+        // Update formData with the mapped data
+        setFormData(prevData => ({
+          ...prevData,
+          ...mappedData
+        }))
+
+        toast({
+          title: 'Fahrzeugdaten geladen',
+          description: `${result.data.Description || 'Fahrzeugdaten'} erfolgreich importiert`,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        })
+      } else {
+        toast({
+          title: 'Keine Daten gefunden',
+          description: result.error || 'Für diese HSN/TSN-Kombination wurden keine Fahrzeugdaten gefunden',
+          status: 'warning',
+          duration: 4000,
+          isClosable: true,
+        })
+      }
+    } catch (error) {
+      toast({
+        title: 'Fehler',
+        description: 'Fehler beim Abrufen der Fahrzeugdaten',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+    } finally {
+      setKbaLookupLoading(false)
+    }
+  }
+
+  const handleHsnChange = (e) => {
+    const value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4) // Alphanumeric only, max 4
+    setHsn(value)
+
+    // Trigger lookup if both fields are complete
+    if (value.length === 4 && tsn.length === 3) {
+      handleKBALookup(value, tsn)
+    }
+  }
+
+  const handleTsnChange = (e) => {
+    const value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 3) // Alphanumeric only, max 3
+    setTsn(value)
+
+    // Trigger lookup if both fields are complete
+    if (hsn.length === 4 && value.length === 3) {
+      handleKBALookup(hsn, value)
+    }
   }
 
   const handleFeatureToggle = (category, feature) => {
@@ -255,6 +332,49 @@ export default function CreateListing() {
       <div className="flex items-center gap-3 mb-6">
         <Car className="h-8 w-8 text-primary-600" />
         <h2 className="text-2xl font-bold text-gray-900">Grundinformationen</h2>
+      </div>
+
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Search className="h-5 w-5 text-blue-600" />
+          <h3 className="font-semibold text-gray-900">HSN/TSN Fahrzeugdaten abrufen</h3>
+        </div>
+        <p className="text-sm text-gray-600 mb-4">
+          Geben Sie die HSN (4 Stellen) und TSN (3 Stellen) ein, um Fahrzeugdaten automatisch zu laden.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">HSN (4 Stellen)</label>
+            <input
+              type="text"
+              value={hsn}
+              onChange={handleHsnChange}
+              maxLength={4}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              placeholder="z.B. 0005"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">TSN (3 Stellen)</label>
+            <input
+              type="text"
+              value={tsn}
+              onChange={handleTsnChange}
+              maxLength={3}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              placeholder="z.B. AJR"
+            />
+          </div>
+        </div>
+
+        {kbaLookupLoading && (
+          <div className="mt-3 flex items-center gap-2 text-sm text-blue-600">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+            <span>Fahrzeugdaten werden abgerufen...</span>
+          </div>
+        )}
       </div>
 
       <div>
