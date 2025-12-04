@@ -11,6 +11,7 @@ export default function CreateListing() {
   const [kbaLookupLoading, setKbaLookupLoading] = useState(false)
   const [hsn, setHsn] = useState('')
   const [tsn, setTsn] = useState('')
+  const [fieldErrors, setFieldErrors] = useState([])
   const [formData, setFormData] = useState({
     // Basic Info
     title: '',
@@ -89,10 +90,17 @@ export default function CreateListing() {
 
   const handleChange = (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+    const fieldName = e.target.name
+
     setFormData({
       ...formData,
-      [e.target.name]: value
+      [fieldName]: value
     })
+
+    // Clear error for this field when user starts typing
+    if (fieldErrors.includes(fieldName)) {
+      setFieldErrors(fieldErrors.filter(field => field !== fieldName))
+    }
   }
 
   const handleKBALookup = async (hsnValue, tsnValue) => {
@@ -209,6 +217,13 @@ export default function CreateListing() {
     setImagePreviews(prevPreviews => prevPreviews.filter((_, index) => index !== indexToRemove))
   }
 
+  const getInputClassName = (fieldName, baseClassName) => {
+    const hasError = fieldErrors.includes(fieldName)
+    return hasError
+      ? baseClassName.replace('border-gray-300', 'border-red-500 focus:ring-red-500 focus:border-red-500')
+      : baseClassName
+  }
+
   const validateForm = () => {
     const errors = []
     const requiredFields = {
@@ -251,6 +266,9 @@ export default function CreateListing() {
     // Validate form before submission
     const validationErrors = validateForm()
     if (validationErrors.length > 0) {
+      // Set field errors for visual feedback (red borders)
+      setFieldErrors(validationErrors.map(error => error.field))
+
       // Group errors by step
       const errorsByStep = validationErrors.reduce((acc, error) => {
         if (!acc[error.step]) acc[error.step] = []
@@ -456,7 +474,7 @@ export default function CreateListing() {
           value={formData.title}
           onChange={handleChange}
           required
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className={getInputClassName('title', "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent")}
           placeholder="z.B. BMW 320d Touring M Sport"
         />
       </div>
@@ -470,7 +488,7 @@ export default function CreateListing() {
             value={formData.make}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            className={getInputClassName('make', "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500")}
             placeholder="z.B. BMW"
           />
         </div>
@@ -483,7 +501,7 @@ export default function CreateListing() {
             value={formData.model}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            className={getInputClassName('model', "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500")}
             placeholder="z.B. 320d"
           />
         </div>
@@ -500,7 +518,7 @@ export default function CreateListing() {
             required
             min="1900"
             max={new Date().getFullYear() + 1}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            className={getInputClassName('year', "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500")}
             placeholder="2020"
           />
         </div>
@@ -527,7 +545,7 @@ export default function CreateListing() {
             onChange={handleChange}
             required
             min="0"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            className={getInputClassName('price', "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500")}
             placeholder="25000"
           />
         </div>
@@ -541,7 +559,7 @@ export default function CreateListing() {
             onChange={handleChange}
             required
             min="0"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            className={getInputClassName('mileage', "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500")}
             placeholder="50000"
           />
         </div>
@@ -555,7 +573,7 @@ export default function CreateListing() {
             value={formData.condition}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            className={getInputClassName('condition', "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500")}
           >
             <option value="used">Gebraucht</option>
             <option value="new">Neufahrzeug</option>
@@ -674,7 +692,7 @@ export default function CreateListing() {
             value={formData.fuelType}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            className={getInputClassName('fuelType', "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500")}
           >
             <option value="Benzin">Benzin</option>
             <option value="Diesel">Diesel</option>
@@ -693,7 +711,7 @@ export default function CreateListing() {
             value={formData.transmission}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            className={getInputClassName('transmission', "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500")}
           >
             <option value="Manuell">Manuell</option>
             <option value="Automatik">Automatik</option>

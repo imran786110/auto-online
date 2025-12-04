@@ -14,6 +14,7 @@ export default function EditListing() {
   const [kbaLookupLoading, setKbaLookupLoading] = useState(false)
   const [hsn, setHsn] = useState('')
   const [tsn, setTsn] = useState('')
+  const [fieldErrors, setFieldErrors] = useState([])
   const [formData, setFormData] = useState({
     // Basic Info
     title: '',
@@ -198,10 +199,17 @@ export default function EditListing() {
 
   const handleChange = (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+    const fieldName = e.target.name
+
     setFormData({
       ...formData,
-      [e.target.name]: value
+      [fieldName]: value
     })
+
+    // Clear error for this field when user starts typing
+    if (fieldErrors.includes(fieldName)) {
+      setFieldErrors(fieldErrors.filter(field => field !== fieldName))
+    }
   }
 
   const handleKBALookup = async (hsnValue, tsnValue) => {
@@ -323,6 +331,13 @@ export default function EditListing() {
     setNewImagePreviews(prevPreviews => prevPreviews.filter((_, index) => index !== indexToRemove))
   }
 
+  const getInputClassName = (fieldName, baseClassName) => {
+    const hasError = fieldErrors.includes(fieldName)
+    return hasError
+      ? baseClassName.replace('border-gray-300', 'border-red-500 focus:ring-red-500 focus:border-red-500')
+      : baseClassName
+  }
+
   const validateForm = () => {
     const errors = []
     const requiredFields = {
@@ -365,6 +380,9 @@ export default function EditListing() {
     // Validate form before submission
     const validationErrors = validateForm()
     if (validationErrors.length > 0) {
+      // Set field errors for visual feedback (red borders)
+      setFieldErrors(validationErrors.map(error => error.field))
+
       // Group errors by step
       const errorsByStep = validationErrors.reduce((acc, error) => {
         if (!acc[error.step]) acc[error.step] = []
