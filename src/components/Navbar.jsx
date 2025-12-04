@@ -86,6 +86,7 @@ const Navbar = () => {
               Kontakt
             </Link>
 
+            {/* Authentication UI - Hidden for public users */}
             {user ? (
               <>
                 <Link
@@ -139,14 +140,16 @@ const Navbar = () => {
                   )}
                 </div>
               </>
-            ) : (
-              <Link
-                to="/sign-in"
-                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium transition-colors"
-              >
-                Anmelden
-              </Link>
-            )}
+            ) : null}
+            {/* Login button hidden - users can view cars and contact via email without account */}
+            {/*
+            <Link
+              to="/sign-in"
+              className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium transition-colors"
+            >
+              Anmelden
+            </Link>
+            */}
           </div>
 
           {/* Mobile Menu Button */}
@@ -185,6 +188,7 @@ const Navbar = () => {
               Kontakt
             </Link>
 
+            {/* Authentication UI - Hidden for public users */}
             {user ? (
               <>
                 <Link
@@ -224,15 +228,17 @@ const Navbar = () => {
                   Abmelden
                 </button>
               </>
-            ) : (
-              <Link
-                to="/sign-in"
-                onClick={closeMenu}
-                className="block px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium transition-colors"
-              >
-                Anmelden
-              </Link>
-            )}
+            ) : null}
+            {/* Login button hidden - users can view cars and contact via email without account */}
+            {/*
+            <Link
+              to="/sign-in"
+              onClick={closeMenu}
+              className="block px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium transition-colors"
+            >
+              Anmelden
+            </Link>
+            */}
           </div>
         )}
       </div>
