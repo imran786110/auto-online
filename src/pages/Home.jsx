@@ -261,11 +261,11 @@ const Home = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                 <div className="text-center p-6 bg-white/5 rounded-xl border border-white/10">
-                  <div className="text-primary-400 text-4xl font-bold mb-2">10+</div>
+                  <div className="text-primary-400 text-4xl font-bold mb-2">1+</div>
                   <div className="text-gray-300 font-medium">Jahre Erfahrung</div>
                 </div>
                 <div className="text-center p-6 bg-white/5 rounded-xl border border-white/10">
-                  <div className="text-primary-400 text-4xl font-bold mb-2">500+</div>
+                  <div className="text-primary-400 text-4xl font-bold mb-2">5+</div>
                   <div className="text-gray-300 font-medium">Zufriedene Kunden</div>
                 </div>
                 <div className="text-center p-6 bg-white/5 rounded-xl border border-white/10">
