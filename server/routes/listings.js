@@ -129,7 +129,7 @@ router.get('/:id', (req, res) => {
 });
 
 // Create listing
-router.post('/', authenticate, upload.array('images', 10), [
+router.post('/', authenticate, upload.array('images', 15), [
   body('title').trim().notEmpty(),
   body('price').isFloat({ min: 0 }),
   body('description').optional().trim(),
@@ -212,7 +212,7 @@ router.post('/', authenticate, upload.array('images', 10), [
 });
 
 // Update listing
-router.put('/:id', authenticate, upload.array('images', 10), (req, res) => {
+router.put('/:id', authenticate, upload.array('images', 15), (req, res) => {
   const listingId = req.params.id;
 
   // First check if user owns the listing
