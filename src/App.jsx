@@ -6,7 +6,8 @@ import NotFound404 from './pages/NotFound404';
 // Authentication pages - kept accessible via direct URL for admin access
 // Sign-in button hidden from navbar, but admins can access /sign-in directly
 import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
+// Sign-up disabled - admin accounts created manually
+// import SignUp from './pages/SignUp';
 // import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home';
 import Listings from './pages/Listings';
@@ -32,7 +33,8 @@ const ROUTES = {
   // Authentication routes - accessible via direct URL (e.g., /sign-in) for admin access
   // Login button hidden from navbar to keep UI clean for public users
   SignIn: {id: '2', element: SignIn, path: '/sign-in'},
-  SignUp: {id: '3', element: SignUp, path: '/sign-up'},
+  // Sign-up route disabled - admin accounts created manually by existing admins
+  // SignUp: {id: '3', element: SignUp, path: '/sign-up'},
   // ForgotPassword: {id: '4', element: ForgotPassword, path: '/forgot-password'},
   Listings: {id: '5', element: Listings, path: '/category/:categoryName'},
   CreateListing: {id: '6', element: CreateListing, path: '/create-listing'},
