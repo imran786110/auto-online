@@ -231,12 +231,15 @@ export default function CreateListing() {
       })
 
       // Append features as JSON strings
-      data.append('features', JSON.stringify(features.safety))
       data.append('safetyFeatures', JSON.stringify(features.safety))
       data.append('comfortFeatures', JSON.stringify(features.comfort))
       data.append('entertainmentFeatures', JSON.stringify(features.entertainment))
       data.append('extrasFeatures', JSON.stringify(features.extras))
-      data.append('parkingAssistance', JSON.stringify(features.parking))
+
+      // parkingAssistance should be a comma-separated string, not JSON
+      if (features.parking && features.parking.length > 0) {
+        data.append('parkingAssistance', features.parking.join(', '))
+      }
 
       // Append images
       images.forEach((image) => {
