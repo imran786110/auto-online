@@ -100,8 +100,7 @@ function Contact() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">Telefon</h3>
-                  <p className="text-gray-600">+49 123 456789</p>
-                  <p className="text-gray-600">+49 987 654321</p>
+                  <p className="text-gray-600">+49 176 37130790</p>
                 </div>
               </div>
 
@@ -113,7 +112,6 @@ function Contact() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">E-Mail</h3>
                   <p className="text-gray-600">info@imranhussain.de</p>
-                  <p className="text-gray-600">verkauf@autoonline.de</p>
                 </div>
               </div>
 
@@ -124,8 +122,8 @@ function Contact() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">Adresse</h3>
-                  <p className="text-gray-600">Musterstraße 123</p>
-                  <p className="text-gray-600">12345 Berlin</p>
+                  <p className="text-gray-600">Goldäckerstr. 66</p>
+                  <p className="text-gray-600">71144 Steinenbronn</p>
                   <p className="text-gray-600">Deutschland</p>
                 </div>
               </div>
@@ -138,9 +136,9 @@ function Contact() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">Öffnungszeiten</h3>
                   <div className="text-gray-600 space-y-1">
-                    <p>Montag - Freitag: 9:00 - 18:00</p>
-                    <p>Samstag: 10:00 - 14:00</p>
-                    <p>Sonntag: Geschlossen</p>
+                    <p>Montag - Freitag: Call or Email Us</p>
+                    <p>Samstag: Call or Email Us</p>
+                    <p>Sonntag: Call or Email Us</p>
                   </div>
                 </div>
               </div>
