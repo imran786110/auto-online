@@ -188,8 +188,8 @@ export default function AdminDashboard() {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-xl shadow-lg mb-8 overflow-visible">
-          <div className="overflow-x-auto overflow-y-visible">
+        <div className="bg-white rounded-xl shadow-lg mb-8 overflow-hidden">
+          <div className="overflow-x-auto">
             <table className="w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -265,9 +265,14 @@ export default function AdminDashboard() {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
+                              const rect = e.currentTarget.getBoundingClientRect();
+                              const menuButton = e.currentTarget;
+                              menuButton.dataset.menuTop = rect.bottom + 8;
+                              menuButton.dataset.menuRight = window.innerWidth - rect.right;
                               setOpenMenuId(openMenuId === listing.id ? null : listing.id);
                             }}
                             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                            id={`menu-button-${listing.id}`}
                           >
                             <MoreVertical className="h-5 w-5 text-gray-600" />
                           </button>
@@ -281,8 +286,14 @@ export default function AdminDashboard() {
                                 onClick={() => setOpenMenuId(null)}
                               />
 
-                              {/* Menu - positioned to open downward */}
-                              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-40 max-h-96 overflow-y-auto">
+                              {/* Menu - fixed positioning to escape overflow containers */}
+                              <div
+                                className="fixed w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-40"
+                                style={{
+                                  top: `${document.getElementById(`menu-button-${listing.id}`)?.dataset.menuTop}px`,
+                                  right: `${document.getElementById(`menu-button-${listing.id}`)?.dataset.menuRight}px`
+                                }}
+                              >
                                 <button
                                   onClick={() => navigate(`/category/sale/${listing.id}`)}
                                   className="flex items-center gap-2 w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg"
