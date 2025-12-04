@@ -1233,15 +1233,15 @@ export default function CreateListing() {
           {currentStep === 4 && renderStep4()}
           {currentStep === 5 && renderStep5()}
 
-          <div className="flex gap-4 mt-8 pt-6 border-t">
+          <div className="flex gap-2 sm:gap-4 mt-8 pt-6 border-t">
             {currentStep > 1 && (
               <button
                 type="button"
                 onClick={prevStep}
-                className="flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 font-semibold"
+                className="flex items-center gap-2 px-3 sm:px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 font-semibold"
               >
                 <ChevronLeft size={20} />
-                Zurück
+                <span className="hidden sm:inline">Zurück</span>
               </button>
             )}
 
@@ -1252,20 +1252,24 @@ export default function CreateListing() {
             >
               {currentStep < totalSteps ? (
                 <>
-                  Weiter
+                  <span className="hidden sm:inline">Weiter</span>
                   <ChevronRight size={20} />
                 </>
               ) : (
-                loading ? 'Wird erstellt...' : 'Anzeige veröffentlichen'
+                loading ? 'Wird erstellt...' : <span className="hidden sm:inline">Anzeige veröffentlichen</span>
+              )}
+              {currentStep === totalSteps && !loading && (
+                <span className="sm:hidden">Veröffentlichen</span>
               )}
             </button>
 
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-3 sm:px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 font-semibold"
             >
-              Abbrechen
+              <span className="sm:hidden">✕</span>
+              <span className="hidden sm:inline">Abbrechen</span>
             </button>
           </div>
         </form>
