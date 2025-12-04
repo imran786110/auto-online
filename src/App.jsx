@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import Profile from './pages/Profile'
 import NotFound404 from './pages/NotFound404';
-// Authentication pages - commented out (hidden from public users)
-// Users can browse cars and contact via email without creating accounts
-// import SignIn from './pages/SignIn';
-// import SignUp from './pages/SignUp';
+// Authentication pages - kept accessible via direct URL for admin access
+// Sign-in button hidden from navbar, but admins can access /sign-in directly
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 // import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home';
 import Listings from './pages/Listings';
@@ -29,9 +29,10 @@ import SoldOutItems from './pages/SoldOut';
 
 const ROUTES = {
   Home: {id: '1', element: Home, path: '/'},
-  // Authentication routes - commented out for now, can be re-enabled when needed
-  // SignIn: {id: '2', element: SignIn, path: '/sign-in'},
-  // SignUp: {id: '3', element: SignUp, path: '/sign-up'},
+  // Authentication routes - accessible via direct URL (e.g., /sign-in) for admin access
+  // Login button hidden from navbar to keep UI clean for public users
+  SignIn: {id: '2', element: SignIn, path: '/sign-in'},
+  SignUp: {id: '3', element: SignUp, path: '/sign-up'},
   // ForgotPassword: {id: '4', element: ForgotPassword, path: '/forgot-password'},
   Listings: {id: '5', element: Listings, path: '/category/:categoryName'},
   CreateListing: {id: '6', element: CreateListing, path: '/create-listing'},
