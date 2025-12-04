@@ -323,12 +323,80 @@ export default function EditListing() {
     setNewImagePreviews(prevPreviews => prevPreviews.filter((_, index) => index !== indexToRemove))
   }
 
+  const validateForm = () => {
+    const errors = []
+    const requiredFields = {
+      1: [ // Step 1: Grundinformationen
+        { field: 'title', label: 'Titel' },
+        { field: 'make', label: 'Marke' },
+        { field: 'model', label: 'Modell' },
+        { field: 'year', label: 'Baujahr' },
+        { field: 'price', label: 'Preis' },
+        { field: 'mileage', label: 'Kilometerstand' },
+        { field: 'condition', label: 'Zustand' }
+      ],
+      2: [ // Step 2: Technische Daten
+        { field: 'fuelType', label: 'Kraftstoffart' },
+        { field: 'transmission', label: 'Getriebe' }
+      ]
+    }
+
+    // Check all required fields across all steps
+    Object.keys(requiredFields).forEach(step => {
+      requiredFields[step].forEach(({ field, label }) => {
+        if (!formData[field] || formData[field] === '') {
+          errors.push({ step: parseInt(step), field, label })
+        }
+      })
+    })
+
+    return errors
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     // Only submit if we're on the last step
     if (currentStep < totalSteps) {
       nextStep()
+      return
+    }
+
+    // Validate form before submission
+    const validationErrors = validateForm()
+    if (validationErrors.length > 0) {
+      // Group errors by step
+      const errorsByStep = validationErrors.reduce((acc, error) => {
+        if (!acc[error.step]) acc[error.step] = []
+        acc[error.step].push(error.label)
+        return acc
+      }, {})
+
+      // Create error message
+      let errorMessage = 'Bitte füllen Sie folgende Pflichtfelder aus:\n\n'
+      Object.keys(errorsByStep).forEach(step => {
+        const stepNames = {
+          1: 'Schritt 1 (Grundinformationen)',
+          2: 'Schritt 2 (Technische Daten)'
+        }
+        errorMessage += `${stepNames[step]}:\n`
+        errorMessage += errorsByStep[step].map(field => `  • ${field}`).join('\n')
+        errorMessage += '\n\n'
+      })
+
+      toast({
+        title: 'Fehlende Pflichtfelder',
+        description: errorMessage,
+        status: 'error',
+        duration: 8000,
+        isClosable: true,
+        position: 'top'
+      })
+
+      // Navigate to the first step with errors
+      const firstErrorStep = Math.min(...Object.keys(errorsByStep).map(Number))
+      setCurrentStep(firstErrorStep)
+      setLoading(false)
       return
     }
 
