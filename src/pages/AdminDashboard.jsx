@@ -281,9 +281,9 @@ export default function AdminDashboard() {
                                 onClick={() => setOpenMenuId(null)}
                               />
 
-                              {/* Menu - positioned to open upward for last items */}
-                              <div className={`absolute right-0 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-40 ${
-                                filteredListings.indexOf(listing) >= filteredListings.length - 2
+                              {/* Menu - positioned to open upward for last items or when there are few items */}
+                              <div className={`absolute right-0 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-40 max-h-96 overflow-y-auto ${
+                                filteredListings.length <= 2 || filteredListings.indexOf(listing) >= filteredListings.length - 2
                                   ? 'bottom-full mb-2'
                                   : 'top-full mt-2'
                               }`}>
