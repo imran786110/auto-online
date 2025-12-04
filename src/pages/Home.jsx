@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom'
 import { ArrowRight, Shield, Award, HeartHandshake, Search } from 'lucide-react'
 import topImage from '../images/auto-online-bg.png';
@@ -151,13 +150,22 @@ const Home = () => {
                 </div>
               </div>
 
-              <Link
-                to="/category/sale"
-                className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 font-semibold transition-colors mt-4"
-              >
-                Fahrzeuge erkunden
-                <ArrowRight className="h-5 w-5" />
-              </Link>
+              <div className="flex flex-wrap gap-4 mt-4">
+                <Link
+                  to="/category/sale"
+                  className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 font-semibold transition-colors"
+                >
+                  Fahrzeuge erkunden
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+                <Link
+                  to="/about"
+                  className="inline-flex items-center gap-2 bg-white text-primary-600 border-2 border-primary-600 px-6 py-3 rounded-lg hover:bg-primary-50 font-semibold transition-colors"
+                >
+                  Mehr über uns
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
