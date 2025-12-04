@@ -193,7 +193,13 @@ router.post('/', authenticate, upload.array('images', 10), [
     function(err) {
       if (err) {
         console.error('❌ Database insert error:', err);
-        return res.status(500).json({ error: 'Failed to create listing' });
+        console.error('❌ Error message:', err.message);
+        console.error('❌ Error code:', err.code);
+        console.error('❌ Error errno:', err.errno);
+        return res.status(500).json({
+          error: 'Failed to create listing',
+          details: err.message
+        });
       }
 
       console.log('✅ Listing created successfully! ID:', this.lastID);
