@@ -17,7 +17,7 @@ export default function Footer() {
               <span className="text-2xl font-bold text-white">Auto Online</span>
             </Link>
             <p className="text-sm text-gray-400">
-              Bei Auto-Online.de geht es nicht nur um den Verkauf von Autos, sondern um die Schaffung einer nahtlosen, vertrauensvollen Erfahrung für unsere Kunden.
+              Bei auto-online.sheraliat.com geht es nicht nur um den Verkauf von Autos, sondern um die Schaffung einer nahtlosen, vertrauensvollen Erfahrung für unsere Kunden.
             </p>
             <div className="flex gap-4">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary-500 transition-colors">

@@ -252,11 +252,11 @@ const Home = () => {
           <div className="max-w-4xl mx-auto">
             <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/10">
               <p className="text-lg text-gray-200 leading-relaxed mb-6">
-                Bei <span className="text-primary-400 font-semibold">Auto-Online.de</span> sind wir mehr als nur ein Autohändler – wir sind Ihre vertrauenswürdige Quelle für hochwertige Fahrzeuge und kundenorientierten Service. Unser Engagement für Exzellenz spiegelt sich in unserem sorgfältig kuratierten Angebot wider, das sowohl neue Modelle als auch geprüfte Gebrauchtwagen umfasst.
+                Bei <span className="text-primary-400 font-semibold">auto-online.sheraliat.com</span> sind wir mehr als nur ein Autohändler – wir sind Ihre vertrauenswürdige Quelle für hochwertige Fahrzeuge und kundenorientierten Service. Unser Engagement für Exzellenz spiegelt sich in unserem sorgfältig kuratierten Angebot wider, das sowohl neue Modelle als auch geprüfte Gebrauchtwagen umfasst.
               </p>
 
               <p className="text-lg text-gray-200 leading-relaxed mb-8">
-                Mit einem Team von Automobil-Experten setzen wir auf Qualität und Transparenz, um sicherzustellen, dass Ihre Fahrzeugwahl Ihren individuellen Bedürfnissen entspricht. Bei Auto-Online.de geht es nicht nur um den Verkauf von Autos, sondern um die Schaffung einer nahtlosen, vertrauensvollen Erfahrung für unsere Kunden.
+                Mit einem Team von Automobil-Experten setzen wir auf Qualität und Transparenz, um sicherzustellen, dass Ihre Fahrzeugwahl Ihren individuellen Bedürfnissen entspricht. Bei auto-online.sheraliat.com geht es nicht nur um den Verkauf von Autos, sondern um die Schaffung einer nahtlosen, vertrauensvollen Erfahrung für unsere Kunden.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">

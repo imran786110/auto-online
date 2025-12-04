@@ -19,11 +19,11 @@ const About = () => {
         </Heading>
 
         <Text fontSize="lg">
-        Bei Auto-Online.de sind wir mehr als nur ein Autohändler – wir sind Ihre vertrauenswürdige Quelle für hochwertige Fahrzeuge und kundenorientierten Service. Unser Engagement für Exzellenz spiegelt sich in unserem sorgfältig kuratierten Angebot wider, das sowohl neue Modelle als auch geprüfte Gebrauchtwagen umfasst.
+        Bei auto-online.sheraliat.com sind wir mehr als nur ein Autohändler – wir sind Ihre vertrauenswürdige Quelle für hochwertige Fahrzeuge und kundenorientierten Service. Unser Engagement für Exzellenz spiegelt sich in unserem sorgfältig kuratierten Angebot wider, das sowohl neue Modelle als auch geprüfte Gebrauchtwagen umfasst.
         </Text>
 
         <Text fontSize="lg">
-        Mit einem Team von Automobil-Experten setzen wir auf Qualität und Transparenz, um sicherzustellen, dass Ihre Fahrzeugwahl Ihren individuellen Bedürfnissen entspricht. Bei Auto-Online.de geht es nicht nur um den Verkauf von Autos, sondern um die Schaffung einer nahtlosen, vertrauensvollen Erfahrung für unsere Kunden. Besuchen Sie uns und entdecken Sie, warum Auto-Online.de die erste Anlaufstelle für anspruchsvolle Fahrer ist.
+        Mit einem Team von Automobil-Experten setzen wir auf Qualität und Transparenz, um sicherzustellen, dass Ihre Fahrzeugwahl Ihren individuellen Bedürfnissen entspricht. Bei auto-online.sheraliat.com geht es nicht nur um den Verkauf von Autos, sondern um die Schaffung einer nahtlosen, vertrauensvollen Erfahrung für unsere Kunden. Besuchen Sie uns und entdecken Sie, warum auto-online.sheraliat.com die erste Anlaufstelle für anspruchsvolle Fahrer ist.
         </Text>
 
       </VStack>
