@@ -169,6 +169,8 @@ const SignUp = () => {
               </button>
             </form>
 
+            {/* Sign-in link removed for consistency */}
+            {/*
             <div className="mt-6 space-y-3">
               <p className="text-center text-gray-600">
                 Haben Sie bereits ein Konto?{' '}
@@ -177,6 +179,7 @@ const SignUp = () => {
                 </Link>
               </p>
             </div>
+            */}
           </div>
         </div>
       </div>

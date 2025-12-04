@@ -128,6 +128,8 @@ export default function SignIn() {
               </button>
             </form>
 
+            {/* Sign-up link removed - admin accounts created separately */}
+            {/*
             <div className="mt-6 space-y-3">
               <p className="text-center text-gray-600">
                 Noch kein Konto?{' '}
@@ -136,6 +138,7 @@ export default function SignIn() {
                 </Link>
               </p>
             </div>
+            */}
           </div>
         </div>
       </div>
