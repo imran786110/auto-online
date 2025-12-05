@@ -54,6 +54,7 @@ export default function CreateListing() {
     previousOwners: '',
     fullServiceHistory: false,
     nonSmokingVehicle: false,
+    tuvValidity: '',
 
     // Additional Info
     availability: 'Sofort',
@@ -252,6 +253,17 @@ export default function CreateListing() {
     })
 
     return errors
+  }
+
+  // Prevent form submission via Enter key when not on final step
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && currentStep < totalSteps) {
+      e.preventDefault()
+      // Only proceed to next step if Enter was pressed in an input field
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        nextStep()
+      }
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -1005,6 +1017,21 @@ export default function CreateListing() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">TÜV gültig bis</label>
+          <input
+            type="month"
+            name="tuvValidity"
+            value={formData.tuvValidity}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            placeholder="MM/YYYY"
+          />
+          <p className="text-xs text-gray-500 mt-1">Monat und Jahr der TÜV-Gültigkeit</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Klimaanlage</label>
           <select
             name="climatisation"
@@ -1315,7 +1342,7 @@ export default function CreateListing() {
 
         {renderStepIndicator()}
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 sm:p-8" noValidate>
+        <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="bg-white rounded-lg shadow-md p-6 sm:p-8" noValidate>
           {currentStep === 1 && renderStep1()}
           {currentStep === 2 && renderStep2()}
           {currentStep === 3 && renderStep3()}

@@ -317,6 +317,7 @@ const initDatabase = () => {
               { name: 'previousOwners', type: 'INTEGER' },
               { name: 'fullServiceHistory', type: 'BOOLEAN DEFAULT 0' },
               { name: 'nonSmokingVehicle', type: 'BOOLEAN DEFAULT 0' },
+              { name: 'tuvValidity', type: 'TEXT' },
               { name: 'features', type: 'TEXT' },
               { name: 'safetyFeatures', type: 'TEXT' },
               { name: 'comfortFeatures', type: 'TEXT' },

@@ -11,10 +11,10 @@ export default function RecentlyAddedCars() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const data = await listingsAPI.getAll({ category: 'sale' })
-        // Sort by createdAt descending to get latest first, then take top 3
+        const data = await listingsAPI.getAll({ category: 'sale', limit: 3 })
+        // API should handle sorting by createdAt desc, but just in case:
         const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        setListings(sortedData.slice(0, 3))
+        setListings(sortedData)
         setLoading(false)
       } catch (error) {
         console.error('Error fetching listings:', error)

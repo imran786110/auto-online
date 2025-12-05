@@ -57,6 +57,7 @@ export default function EditListing() {
     previousOwners: '',
     fullServiceHistory: false,
     nonSmokingVehicle: false,
+    tuvValidity: '',
 
     // Additional Info
     availability: 'Sofort',
@@ -147,6 +148,7 @@ export default function EditListing() {
           previousOwners: listing.previousOwners || '',
           fullServiceHistory: listing.fullServiceHistory === 1 || listing.fullServiceHistory === true,
           nonSmokingVehicle: listing.nonSmokingVehicle === 1 || listing.nonSmokingVehicle === true,
+          tuvValidity: listing.tuvValidity ? String(listing.tuvValidity) : '',
           availability: listing.availability || 'Sofort',
           vehicleType: listing.vehicleType || 'PKW',
           bodyType: listing.bodyType || '',
@@ -163,20 +165,28 @@ export default function EditListing() {
           }
         }
 
+        // Parse comma-separated string
+        const parseCommaString = (str) => {
+          if (!str || str.trim() === '') return []
+          return str.split(',').map(item => item.trim()).filter(item => item !== '')
+        }
+
         setFeatures({
           safety: parseFeatures(listing.safetyFeatures),
           comfort: parseFeatures(listing.comfortFeatures),
           entertainment: parseFeatures(listing.entertainmentFeatures),
           extras: parseFeatures(listing.extrasFeatures),
-          parking: parseFeatures(listing.parkingAssistance)
+          parking: parseCommaString(listing.parkingAssistance)
         })
 
-        // Parse existing images
-        const images = parseFeatures(listing.images)
-        console.log('📸 Parsed images from listing:', images)
-        console.log('📸 Listing.images raw value:', listing.images)
-        setExistingImages(images || [])
-        console.log('📸 Setting existingImages state to:', images || [])
+        // Parse existing images - check if already an array or needs parsing
+        let images = []
+        if (Array.isArray(listing.images)) {
+          images = listing.images
+        } else if (typeof listing.images === 'string') {
+          images = parseFeatures(listing.images)
+        }
+        setExistingImages(images)
 
         // Save category for navigation
         setCategory(listing.category || 'sale')
@@ -368,6 +378,17 @@ export default function EditListing() {
     return errors
   }
 
+  // Prevent form submission via Enter key when not on final step
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && currentStep < totalSteps) {
+      e.preventDefault()
+      // Only proceed to next step if Enter was pressed in an input field
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        nextStep()
+      }
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -420,10 +441,6 @@ export default function EditListing() {
 
     setLoading(true)
 
-    console.log('🚀 SUBMIT - Current existingImages state:', existingImages)
-    console.log('🚀 SUBMIT - Images to delete:', imagesToDelete)
-    console.log('🚀 SUBMIT - New images count:', newImages.length)
-
     try {
       const data = new FormData()
 
@@ -446,7 +463,6 @@ export default function EditListing() {
       }
 
       // Append existing images (not deleted)
-      console.log('🚀 SUBMIT - Appending existingImages to FormData:', JSON.stringify(existingImages))
       data.append('existingImages', JSON.stringify(existingImages))
 
       // Append images to delete
@@ -481,7 +497,11 @@ export default function EditListing() {
     }
   }
 
-  const nextStep = () => {
+  const nextStep = (e) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1)
     }
@@ -1120,6 +1140,21 @@ export default function EditListing() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">TÜV gültig bis</label>
+          <input
+            type="month"
+            name="tuvValidity"
+            value={formData.tuvValidity}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            placeholder="MM/YYYY"
+          />
+          <p className="text-xs text-gray-500 mt-1">Monat und Jahr der TÜV-Gültigkeit</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Klimaanlage</label>
           <select
             name="climatisation"
@@ -1467,7 +1502,7 @@ export default function EditListing() {
 
         {renderStepIndicator()}
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 sm:p-8" noValidate>
+        <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="bg-white rounded-lg shadow-md p-6 sm:p-8" noValidate>
           {currentStep === 1 && renderStep1()}
           {currentStep === 2 && renderStep2()}
           {currentStep === 3 && renderStep3()}

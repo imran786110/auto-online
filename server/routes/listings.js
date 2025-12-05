@@ -158,7 +158,7 @@ router.post('/', authenticate, upload.array('images', 15), [
     // Physical Characteristics
     color, colorManufacturer, interiorColor, interiorType, doors, seats,
     // Condition
-    previousOwners, fullServiceHistory, nonSmokingVehicle,
+    previousOwners, fullServiceHistory, nonSmokingVehicle, tuvValidity,
     // Features (JSON strings)
     safetyFeatures, comfortFeatures, entertainmentFeatures, extrasFeatures,
     // Additional Info
@@ -174,7 +174,7 @@ router.post('/', authenticate, upload.array('images', 15), [
       fuelConsumptionCity, fuelConsumptionHighway, fuelConsumptionCombined,
       co2Emissions, emissionClass, emissionSticker,
       color, colorManufacturer, interiorColor, interiorType, doors, seats,
-      previousOwners, fullServiceHistory, nonSmokingVehicle,
+      previousOwners, fullServiceHistory, nonSmokingVehicle, tuvValidity,
       features, safetyFeatures, comfortFeatures, entertainmentFeatures, extrasFeatures,
       availability, vehicleType, bodyType, climatisation, parkingAssistance,
       images
@@ -185,7 +185,7 @@ router.post('/', authenticate, upload.array('images', 15), [
       fuelConsumptionCity, fuelConsumptionHighway, fuelConsumptionCombined,
       co2Emissions, emissionClass, emissionSticker,
       color, colorManufacturer, interiorColor, interiorType, doors, seats,
-      previousOwners, fullServiceHistory ? 1 : 0, nonSmokingVehicle ? 1 : 0,
+      previousOwners, fullServiceHistory ? 1 : 0, nonSmokingVehicle ? 1 : 0, tuvValidity,
       JSON.stringify({ safety: [], comfort: [], entertainment: [], extras: [] }), safetyFeatures, comfortFeatures, entertainmentFeatures, extrasFeatures,
       availability, vehicleType, bodyType, climatisation, parkingAssistance,
       JSON.stringify(images)
@@ -241,7 +241,7 @@ router.put('/:id', authenticate, upload.array('images', 15), (req, res) => {
       // Physical Characteristics
       color, colorManufacturer, interiorColor, interiorType, doors, seats,
       // Condition
-      previousOwners, fullServiceHistory, nonSmokingVehicle,
+      previousOwners, fullServiceHistory, nonSmokingVehicle, tuvValidity,
       // Features (JSON strings)
       features, safetyFeatures, comfortFeatures, entertainmentFeatures, extrasFeatures,
       // Additional Info
@@ -258,23 +258,39 @@ router.put('/:id', authenticate, upload.array('images', 15), (req, res) => {
       try {
         const parsed = JSON.parse(existingImages);
         images = Array.isArray(parsed) ? parsed : [];
-        console.log('📸 Existing images from request:', images);
 
         // IMPORTANT: If existingImages is explicitly sent as empty array [], keep current images
         // Only clear images if user explicitly deleted them (imagesToDelete will have entries)
         if (images.length === 0 && (!imagesToDelete || JSON.parse(imagesToDelete || '[]').length === 0)) {
-          console.log('⚠️  WARNING: existingImages is empty but no images marked for deletion');
-          console.log('⚠️  Preserving current images to prevent accidental loss');
-          images = listing.images ? JSON.parse(listing.images) : [];
+          // listing.images might already be an array or might be a JSON string
+          if (Array.isArray(listing.images)) {
+            images = listing.images;
+          } else if (typeof listing.images === 'string') {
+            images = listing.images ? JSON.parse(listing.images) : [];
+          } else {
+            images = [];
+          }
         }
       } catch (e) {
-        console.log('❌ Error parsing existingImages, using listing images');
-        images = listing.images ? JSON.parse(listing.images) : [];
+        // listing.images might already be an array or might be a JSON string
+        if (Array.isArray(listing.images)) {
+          images = listing.images;
+        } else if (typeof listing.images === 'string') {
+          images = listing.images ? JSON.parse(listing.images) : [];
+        } else {
+          images = [];
+        }
       }
     } else {
       // No existingImages sent, keep current listing images
-      console.log('📸 No existingImages field, using current listing images');
-      images = listing.images ? JSON.parse(listing.images) : [];
+      // listing.images might already be an array or might be a JSON string
+      if (Array.isArray(listing.images)) {
+        images = listing.images;
+      } else if (typeof listing.images === 'string') {
+        images = listing.images ? JSON.parse(listing.images) : [];
+      } else {
+        images = [];
+      }
     }
 
     // Delete images that were marked for deletion
@@ -297,11 +313,8 @@ router.put('/:id', authenticate, upload.array('images', 15), (req, res) => {
     // Add new uploaded images
     if (req.files && req.files.length > 0) {
       const newImages = req.files.map(file => `/uploads/listings/${file.filename}`);
-      console.log('Adding new images:', newImages);
       images = [...images, ...newImages];
     }
-
-    console.log('Final images array:', images);
 
     db.run(
       `UPDATE listings SET
@@ -311,7 +324,7 @@ router.put('/:id', authenticate, upload.array('images', 15), (req, res) => {
        fuelConsumptionCity = ?, fuelConsumptionHighway = ?, fuelConsumptionCombined = ?,
        co2Emissions = ?, emissionClass = ?, emissionSticker = ?,
        color = ?, colorManufacturer = ?, interiorColor = ?, interiorType = ?, doors = ?, seats = ?,
-       previousOwners = ?, fullServiceHistory = ?, nonSmokingVehicle = ?,
+       previousOwners = ?, fullServiceHistory = ?, nonSmokingVehicle = ?, tuvValidity = ?,
        features = ?, safetyFeatures = ?, comfortFeatures = ?, entertainmentFeatures = ?, extrasFeatures = ?,
        availability = ?, vehicleType = ?, bodyType = ?, climatisation = ?, parkingAssistance = ?,
        images = ?, sold = ?, updatedAt = CURRENT_TIMESTAMP
@@ -350,6 +363,7 @@ router.put('/:id', authenticate, upload.array('images', 15), (req, res) => {
         previousOwners !== undefined ? previousOwners : listing.previousOwners,
         fullServiceHistory !== undefined ? (fullServiceHistory ? 1 : 0) : listing.fullServiceHistory,
         nonSmokingVehicle !== undefined ? (nonSmokingVehicle ? 1 : 0) : listing.nonSmokingVehicle,
+        tuvValidity !== undefined ? tuvValidity : listing.tuvValidity,
         features !== undefined ? features : listing.features,
         safetyFeatures !== undefined ? safetyFeatures : listing.safetyFeatures,
         comfortFeatures !== undefined ? comfortFeatures : listing.comfortFeatures,

@@ -1,8 +1,9 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Eye } from 'lucide-react';
 import { getBaseURL } from '../../api/client';
 
-const ListingItem = ({ listing }) => {
+const ListingItem = memo(({ listing }) => {
   if (!listing) return null;
 
   // Parse images from JSON string
@@ -21,7 +22,7 @@ const ListingItem = ({ listing }) => {
   // Get the first image or use placeholder
   const carImage = images.length > 0
     ? `${getBaseURL()}${images[0]}`
-    : 'https://via.placeholder.com/400x300?text=No+Image';
+    : null;
 
   // Format price in EUR
   const formattedPrice = new Intl.NumberFormat('de-DE', {
@@ -38,15 +39,24 @@ const ListingItem = ({ listing }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden h-full flex flex-col">
       {/* Image Container */}
-      <div className="relative overflow-hidden bg-gray-200 h-48 sm:h-56 md:h-64">
-        <img
-          src={carImage}
-          alt={`${listing.make} ${listing.model}`}
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-          onError={(e) => {
-            e.target.src = 'https://via.placeholder.com/400x300?text=Car+Image';
-          }}
-        />
+      <div className="relative overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300 h-48 sm:h-56 md:h-64">
+        {carImage ? (
+          <img
+            src={carImage}
+            alt={`${listing.make} ${listing.model}`}
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <svg className="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+        )}
 
         {/* Status Badge */}
         <div className="absolute top-3 right-3">
@@ -160,6 +170,8 @@ const ListingItem = ({ listing }) => {
       </div>
     </div>
   );
-};
+});
+
+ListingItem.displayName = 'ListingItem';
 
 export default ListingItem;
